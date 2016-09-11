@@ -1,2 +1,4 @@
+from .models import Stock
+
 def simple_moving():
-    return None
+    return 'It is running from Utils!'
