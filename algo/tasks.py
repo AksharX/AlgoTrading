@@ -2,7 +2,7 @@ from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
 
-from algo.utils import simple_moving
+import algo.utils import runAlgo
 
 logger = get_task_logger(__name__)
 
@@ -16,5 +16,5 @@ def SimpleMovingAlgo():
     """
     Runs the Simple Moving Algo
     """
-    simple_moving()
+    runAlgo()
     logger.info("Running the Simple Moving Average Algo")
