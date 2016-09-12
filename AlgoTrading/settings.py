@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'algo.apps.AlgoConfig',
+    'algo',
 ]
 
 MIDDLEWARE_CLASSES = [
