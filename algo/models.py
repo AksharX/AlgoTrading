@@ -49,7 +49,7 @@ class Buy(models.Model):
 	date = models.DateTimeField('Date of the Shares Bought')
 	price = models.DecimalField(max_digits=6,decimal_places=2)
 
-	def save(self):
+	def save(self, force_insert=False, force_update=False, using=None):
 		addtrans(self,'B')
 		return models.Model.save(self)
 
@@ -60,7 +60,7 @@ class Sell(models.Model):
 	date = models.DateTimeField('Date of Shares Sold')
 	price = models.DecimalField(max_digits=6,decimal_places=2)
 
-	def save(self):
+	def save(self, force_insert=False, force_update=False, using=None):
 		addtrans(self,'S')
 		return models.Model.save(self)
 
