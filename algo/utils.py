@@ -88,7 +88,7 @@ def run_simulation():
 	for instrument in list_of_instruments:
 		year = datetime.today().year
 		filename = '%s-%s.csv' % (instrument,year) #Formating of Filename
-		filepath =  'algo/CSV_FILES'.join(filename)              #Insert Directory of CSV Files!
+		filepath =  'algo/CSV_FILES/'.join(filename)              #Insert Directory of CSV Files!
 		
 		download_daily_bars(instrument,year,filepath) #### Need to UnComment Later!!!!!
 		
