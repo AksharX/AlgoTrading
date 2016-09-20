@@ -1,73 +1,104 @@
+from django.utils.timezone import datetime
+from algo.models import Stock, Buy, Sell
+
 from pyalgotrade import strategy
 from pyalgotrade.barfeed import yahoofeed
 from pyalgotrade.technical import ma
-from django.utils.timezone import datetime
+from pyalgotrade.tools.yahoofinance import download_daily_bars
+from yahoo_finance import Share
+import csv
 
-from algo.models import Stock, Buy, Sell
+class SMA_Strategy(strategy.BacktestingStrategy):
+	def __init__(self, feed, instrument, s):
+		super(SMA_Strategy, self).__init__(feed)
+		self.shares   = s.available_shares()
+		self.__instrument = instrument
+		
+		# We'll use adjusted close values instead of regular close values.
+		#self.setUseAdjustedValues(True)
+		self.__sma = ma.SMA(feed[instrument].getPriceDataSeries(), 15)
+		self.reason = 'Simple Moving Average'
 
-class MyStrategy(strategy.BacktestingStrategy):
-    def __init__(self, feed, instrument, smaPeriod):
-        super(MyStrategy, self).__init__(feed, 1000)
-        self.__position = None
-        self.__instrument = instrument
-        # We'll use adjusted close values instead of regular close values.
-        self.setUseAdjustedValues(True)
-        self.__sma = ma.SMA(feed[instrument].getPriceDataSeries(), smaPeriod)
+	def onBars(self,bars):
+		pass 
+	def onFinish(self, bars):
+		bar = bars[self.__instrument]
+		
+		if self.__sma[-1] is None:
+			return
+			# stock = models.ForeignKey(Stock,on_delete = models.CASCADE)
+			# reason = models.CharField(max_length=200)
+			# num_shs = models.IntegerField('Number of Shares Bought')
+			# date = models.DateTimeField('Date of the Shares Bought')
+			# price
+		#SMA goes below Price - BUY
+		if self.shares is 0:
+			if bar.getPrice() > self.__sma[-1]:
+				s.buy_set.create(
+					reason = self.reason, 
+					num_shs = 10, 
+					date = datetime.now(),
+					price = bar.getPrice(),
+					)
+		
+		#SMA goes below Price - SELL
+		elif bar.getPrice() < self.__sma[-1] and not self.shares.exitActive():
+			s.sell_set.create(
+				reason = self.reason,
+				num_shs = 10,
+				date = datetime.now(),
+				price = bar.getPrice(), 
+				)
+			self.shares.exitMarket()
 
-    def onEnterOk(self, position):
-        execInfo = position.getEntryOrder().getExecutionInfo()
-        self.info("BUY at $%.2f" % (execInfo.getPrice()))
+def RealTime(filepath,instrument):
+	#Date,Open,High,Low,Close,Volume,Adj Close
+	s = Share(instrument)
 
-    def onEnterCanceled(self, position):
-        self.__position = None
+	date = datetime.today().strftime('%Y-%m-%d')
+	O,H,L,C,V,AC = (s.get_open(), s.get_days_high(), s.get_days_low(), s.get_price(), 
+					s.get_volume(),s.get_price())
+	
+	field = [date,O,H,L,C,V,AC]
 
-    def onExitOk(self, position):
-        execInfo = position.getExitOrder().getExecutionInfo()
-        self.info("SELL at $%.2f" % (execInfo.getPrice()))
-        self.__position = None
+	with open(filepath,'a') as csvfile:
+		old = csv.writer(csvfile)
+		add = old.writerow(field)
 
-    def onExitCanceled(self, position):
-        # If the exit was canceled, re-submit it.
-        self.__position.exitMarket()
+def run_all_strategies(instrument,filepath):
 
-    def onBars(self, bars):
-        # Wait for enough bars to be available to calculate a SMA.
-        if self.__sma[-1] is None:
-            return
+	instrument_obj = Stock.objects.get(ticker=instrument)
 
-        bar = bars[self.__instrument]
-        # If a position was not opened, check if we should enter a long position.
-        if self.__position is None:
-            if bar.getPrice() > self.__sma[-1]:
-                orcl = Stock.objects.get(name='Orcle')
-                orcl.buy_set.create(reason='Simple Moving Average',num_shs=10,date=datetime.now(),price=bar.getPrice())
-                
-                # Enter a buy market order for 10 shares. The order is good till canceled.
-                self.__position = self.enterLong(self.__instrument, 10, True)
-        # Check if we have to exit the position.
-        elif bar.getPrice() < self.__sma[-1] and not self.__position.exitActive():
-            self.__position.exitMarket()
+	RealTime(filepath,instrument)
+	# Load the yahoo feed from the CSV file
+	feed = yahoofeed.Feed(maxLen=300)
+	feed.addBarsFromCSV(instrument,filepath)
+	
+	# Insert All Strategies Here! For example SMA, MACD
+	sma_strategy = SMA_Strategy(feed, instrument,instrument_obj)
+	sma_strategy.run()
 
 
-            
-def run_strategy(smaPeriod):
-    # Load the yahoo feed from the CSV file
-    feed = yahoofeed.Feed()
-    feed.addBarsFromCSV("orcl", "orcl-2000.csv")
 
-    # Evaluate the strategy with the feed.
-    myStrategy = MyStrategy(feed, "orcl", smaPeriod)
-    myStrategy.run()
-        
-def runAlgo():
-    run_strategy(15)
-    
-#	# Load the yahoo feed from the CSV file
-#	feed = yahoofeed.Feed()
-#	feed.addBarsFromCSV("orcl", "orcl-2000.csv")
+
+def run_simulation():
+	Stock_qs = Stock.objects.filter(pool = 'Y')
+	list_of_instruments = [s.ticker for s in Stock_qs]
+	
+	for instrument in list_of_instruments:
+		year = datetime.today().year
+		filename = '%s-%s.csv' % (instrument,year) #Formating of Filename
+		filepath =  'algo/CSV_FILES'.join(filename)              #Insert Directory of CSV Files!
+		
+		download_daily_bars(instrument,year,filepath) #### Need to UnComment Later!!!!!
+		
+		run_all_strategies(instrument,filepath,instrument)
+
+#####CHANGES#######
+#	
+#	Instead of Downloading Everytime, call thl the RealTime() to update the current CVS,
+#	only download if the CSV is not there.
 #
-#	# Evaluate the strategy with the feed's bars.
-#	myStrategy = MyStrategy(feed, "orcl")
-#	myStrategy.run()
-
-
+#
+#
+###

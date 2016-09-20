@@ -2,7 +2,7 @@ from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
 
-from algo.utils import runAlgo
+from algo.utils import run_simulation
 
 
 logger = get_task_logger(__name__)
@@ -15,9 +15,9 @@ logger = get_task_logger(__name__)
 #)
 
 
-@periodic_task(run_every=(crontab(minute='*/1')), name="some_task", ignore_result=True)
-def some_task():
+@periodic_task(run_every=(crontab(minute='*/1')), name="Sma_Algo", ignore_result=True)
+def Sma_Algo():
 #   
-    runAlgo()
+    run_simulation()
     
     logger.info("Running the Simple Moving Average Algo")
