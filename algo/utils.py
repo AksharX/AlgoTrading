@@ -24,17 +24,18 @@ def RealTime(filepath,instrument):
 		add = old.writerow(field)
 
 def simple_moving_strategy(instrument,filepath):
-	cash = Cash.objects.get(cash_name=Cash).total()
-	instrument_obj = Stock.objects.get(ticker=instrument)
-
-	RealTime(filepath,instrument)
 	# Load the yahoo feed from the CSV file
+	RealTime(filepath,instrument)
 	feed = yahoofeed.Feed(maxLen=300)
 	feed.addBarsFromCSV(instrument,filepath)
+	
+	for strategy in [SMA_Strategy,]
+		cash = Cash.objects.get(cash_name=Cash).total()
+		instrument_obj = Stock.objects.get(ticker=instrument)
 
-	# Insert All Strategies Here! For example SMA, MACD
-	sma_strategy = SMA_Strategy(feed, instrument,instrument_obj,cash)
-	sma_strategy.run()
+		# Insert All Strategies Here! For example SMA, MACD
+		sma_strategy = strategy(feed, instrument,instrument_obj,cash)
+		sma_strategy.run()
 
 
 
