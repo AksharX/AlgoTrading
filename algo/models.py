@@ -50,6 +50,20 @@ class Stock(models.Model):
 		soldall = [x.num_shs for x in self.sell_set.all()]
 		buyall  = [x.num_shs for x in self.buy_set.all()]
 		return sum(buyall) - sum(soldall)
+	def __str__(self):
+		return str(self.name)
+
+class Algo(models.Model):
+	stock = models.ForeignKey(Stock,on_delete = models.CASCADE)
+	name  = models.CharField(max_length=20)
+	def __str__(self):
+		return '%s Algo: %s' % (self.stock.name,self.name)
+
+class Algo_Data(models.Model):
+	algo  = models.ForeignKey(Algo,on_delete = models.CASCADE)
+	value = models.DecimalField(max_digits=6, decimal_places=2)
+	date  = models.DateTimeField('Date of the Value of Data for Algo')
+
 
 class Buy(models.Model):
 	stock   = models.ForeignKey(Stock,on_delete = models.CASCADE)

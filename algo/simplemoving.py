@@ -11,7 +11,7 @@ class SMA_Strategy(strategy.BacktestingStrategy):
 		# We'll use adjusted close values instead of regular close values.
 		#self.setUseAdjustedValues(True)
 		self.__sma = ma.SMA(feed[instrument].getPriceDataSeries(), 15)
-		self.reason = 'Simple Moving Average'
+		self.algo = 'SMA'
 		self.s = __s
 		self.cash = __cash
 
@@ -20,15 +20,21 @@ class SMA_Strategy(strategy.BacktestingStrategy):
 	def onFinish(self, bars):
 		bar = bars[self.__instrument]
 		
+		self.s.algo_set.get(name='SMA').algo_data_set.create(
+				value = self.__sma[-1] 
+				date = datetime.now()
+			)
 		if self.__sma[-1] is None:
 			return
+		
+
 		#SMA goes below Price - BUY
 		cprice = bar.getPrice()
 		if self.shares is 0:
 			if cprice > self.__sma[-1]:
 				if int(self.cash * .10/cprice ) > 0:
 					self.s.buy_set.create(
-						reason = self.reason, 
+						reason = self.algo, 
 						num_shs = int(self.cash * .10/cprice), 
 						date = datetime.now(),
 						price = cprice,
@@ -37,7 +43,7 @@ class SMA_Strategy(strategy.BacktestingStrategy):
 		#SMA goes below Price - SELL
 		elif cprice < self.__sma[-1] and not self.shares.exitActive():
 			self.s.sell_set.create(
-				reason = self.reason,
+				reason = self.algo,
 				num_shs = 10,
 				date = datetime.now(),
 				price = cprice, 

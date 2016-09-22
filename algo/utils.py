@@ -5,7 +5,7 @@ from pyalgotrade.barfeed 			import yahoofeed
 from pyalgotrade.tools.yahoofinance import download_daily_bars
 from yahoo_finance 					import Share
 import csv 							as csv
-from algo.strats 					import SMA_Strategy
+from algo.simplemoving 				import SMA_Strategy
 
 
 
@@ -23,7 +23,7 @@ def RealTime(filepath,instrument):
 		old = csv.writer(csvfile)
 		add = old.writerow(field)
 
-def run_all_strategies(instrument,filepath):
+def simple_moving_strategy(instrument,filepath):
 	cash = Cash.objects.get(cash_name=Cash).total()
 	instrument_obj = Stock.objects.get(ticker=instrument)
 
@@ -50,7 +50,7 @@ def run_simulation():
 		
 		download_daily_bars(instrument,year,filepath) #### Need to UnComment Later!!!!!
 		
-		run_all_strategies(instrument,filepath)
+		simple_moving_strategy(instrument,filepath)
 
 #####CHANGES#######
 #	
