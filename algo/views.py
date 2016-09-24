@@ -15,13 +15,13 @@ class StockList(generics.ListAPIView):
 	queryset = Stock.objects.all()
 	serializer_class = StockSerializer
 
-class StockDetail(generics.RetrieveUpdateDestroyAPIView):
+class StockDetail(generics.RetrieveAPIView):
 	queryset = Stock.objects.all()
 	lookup_field = 'name'
 	serializer_class = StockSerializer
 
 
-class AlgoDetail(generics.RetrieveUpdateDestroyAPIView):
+class AlgoDetail(generics.RetrieveAPIView):
 	queryset = Algo.objects.all()
 	serializer_class = AlgoDetailSerializer
 

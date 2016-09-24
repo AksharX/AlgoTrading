@@ -5,7 +5,7 @@ from pyalgotrade.barfeed 			import yahoofeed
 from pyalgotrade.tools.yahoofinance import download_daily_bars
 from yahoo_finance 					import Share
 import csv 							as csv
-from algo.simplemoving 				import SMA_Strategy
+from algo.AlgosPy.simplemoving 		import SMA_Strategy
 from os.path						import isfile
 
 
@@ -35,7 +35,7 @@ def simple_moving_strategy(instrument,filepath):
 	feed.addBarsFromCSV(instrument,filepath)
 	
 	# INSERT NEW STRATEGIES HERE.
-	# NEED TO CREATE FOLDER FOR JUST STRATEGY CLASSES.
+	# NEED TO CREATE FOLDER FOR JUST STRATEGY CLASSES. !!!!!!!!!!!!!!!!!!!!!!!
 	
 	for strategy in [SMA_Strategy,]
 		cash = Cash.objects.get(cash_name=Cash).total()
