@@ -39,8 +39,9 @@ def simple_moving_strategy(instrument,filepath):
 	
 	for strategy in [SMA_Strategy,]
 		cash = Cash.objects.get(cash_name=Cash).total()
+		
 		instrument_obj = Stock.objects.get(ticker=instrument)
-
+		
 		the_strats = strategy(feed, instrument,instrument_obj,cash)
 		the_strats.run()
 
