@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from algo.models import Stock, Buy, Sell, Transaction, Algo, Algo_Data, Cash
+from ..models import Stock, Buy, Sell, Transaction, Algo, Algo_Data, Cash
 
 
 class TransactionSerializer(serializers.ModelSerializer):
