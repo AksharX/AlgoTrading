@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'algo',
     'rest_framework',
+    'webpack_loader',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -125,6 +126,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = (
     os.path.join(BASE_DIR,'algo','static'),
     )
+
+#Webpack Loader 
+WEBPACK_LOADER = {
+    'DEFAULT' : {
+        'BUNDLE_DIR_NAME' : 'bundles/',
+        'STATS_FILE' : os.path.join(BASE_DIR, 'webpack-stats.json')
+    }
+}
+
 
 #Django Rest Framework Settings
 REST_FRAMEWORK = {

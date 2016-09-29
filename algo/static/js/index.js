@@ -4,9 +4,9 @@ var ReactDOM = require('react-dom')
 var Hello = React.createClass ({
     render: function() {
         return (
-            <h1>
+            <div>
             Hello, React!
-            </h1>
+            </div>
         )
     }
 })
