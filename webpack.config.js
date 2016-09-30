@@ -1,56 +1,37 @@
-//require our dependencies
-var path = require('path')
+var path = require("path")
 var webpack = require('webpack')
 var BundleTracker = require('webpack-bundle-tracker')
 
+
 module.exports = {
-    //the base directory (absolute path) for resolving the entry option
-    context: __dirname,
-    //the entry point we created earlier. Note that './' means 
-    //your current directory. You don't have to specify the extension  now,
-    //because you will specify extensions later in the `resolve` section
-    entry: './algo/static/js/index', 
-    
-    output: {
-        //where you want your compiled bundle to be stored
-        path: path.resolve('./algo/static/bundles/'), 
-        //naming convention webpack should use for your files
-        filename: '[name]-[hash].js', 
-    },
-    
-    plugins: [
-        //tells webpack where to store data about your bundles.
-        new BundleTracker({filename: './webpack-stats.json'}), 
-        //makes jQuery available in every module
-        new webpack.ProvidePlugin({ 
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery' 
-        })
+  context: __dirname,
+  entry: [
+    './assets/js/index',
+  ],
+
+  output: {
+      path: path.resolve('./assets/bundles/'),
+      filename: '[name]-[hash].js',
+       // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
+  },
+
+  plugins: [
+    new BundleTracker({filename: './webpack-stats.json'}),
+  ],
+
+  module: {
+    loaders: [
+      // we pass the output from babel loader to react-hot loader
+      { test: /\.jsx?$/, 
+        exclude: /node_modules/, 
+        loader: ['babel'], 
+        query: {presets:['react','es2015',]}
+        },
     ],
-    
-    module: {
-        loaders: [
-            //a regexp that tells webpack use the following loaders on all 
-            //.js and .jsx files
-            {test: /\.jsx?$/, 
-                //we definitely don't want babel to transpile all the files in 
-                //node_modules. That would take a long time.
-                exclude: /node_modules/, 
-                //use the babel loader 
-                loader: 'babel-loader', 
-                query: {
-                    //specify that we will be dealing with React code
-                    presets: ['react'] 
-                }
-            }
-        ]
-    },
-    
-    resolve: {
-        //tells webpack where to look for modules
-        modulesDirectories: ['node_modules'],
-        //extensions that should be used to resolve modules
-        extensions: ['', '.js', '.jsx'] 
-    }   
+  },
+
+  resolve: {
+    modulesDirectories: ['node_modules', 'bower_components'],
+    extensions: ['', '.js', '.jsx']
+  }
 }

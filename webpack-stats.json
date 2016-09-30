@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"main-81f30fa8fa957a49b438.js","path":"/Users/Akshar/Documents/PyProjects/AlgoTrading/algo/static/bundles/main-81f30fa8fa957a49b438.js"}]}}
+{"status":"error","error":"ModuleBuildError","message":"Module build failed: SyntaxError: Adjacent JSX elements must be wrapped in an enclosing tag (8:3)\n\n   6 | \t\treturn (\n   7 | \t\t\t<h1>It works like this!</h1>\n>  8 | \t\t\t<h1> </h1>\n     | \t\t\t^\n   9 | \t\t);\n  10 | \t}\n  11 | }\n"}
