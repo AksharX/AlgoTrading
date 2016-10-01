@@ -6,11 +6,11 @@ var BundleTracker = require('webpack-bundle-tracker')
 module.exports = {
   context: __dirname,
   entry: [
-    './assets/js/index',
+    './static/js/index',
   ],
 
   output: {
-      path: path.resolve('./assets/bundles/'),
+      path: path.resolve('./static/bundles/'),
       filename: '[name]-[hash].js',
        // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
   },

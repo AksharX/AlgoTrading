@@ -124,16 +124,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIR = (
-    os.path.join(BASE_DIR,'assets'),
+     os.path.join(BASE_DIR,'static'),
     )
 
 #Webpack Loader 
 WEBPACK_LOADER = {
-    'DEFAULT' : {
-        'BUNDLE_DIR_NAME' : 'bundles/',
-        'STATS_FILE' : os.path.join(BASE_DIR, 'webpack-stats.json')
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/', # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
     }
 }
+
 
 
 #Django Rest Framework Settings
