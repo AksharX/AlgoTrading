@@ -58,7 +58,7 @@ ROOT_URLCONF = 'AlgoTrading.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,9 +123,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIR = (
-     os.path.join(BASE_DIR,'static'),
-    )
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+
+STATIC_ROOT = '/Users/Akshar/Documents/PyProjects/AlgoTrading/staticroot'
+
 
 #Webpack Loader 
 WEBPACK_LOADER = {
