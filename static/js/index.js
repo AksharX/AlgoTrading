@@ -1,13 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {Router, Route, IndexRoute, hashHistory } from 'react-router'
 
-class Layout extends React.Component{
-	render(){
-		return (
-			<h1>It works like this!</h1>
-		)
-	}
-}
+import Layout from "./pages/Layout"
+import Profile from "./pages/Profile"
+import Settings from "./pages/Settings"
+import Dashboard from "./pages/Dashboard"
 
-
-ReactDOM.render(<Layout/>, document.getElementById('container'))
+const app = document.getElementById('react-app')
+ReactDOM.render(
+	<Router history={hashHistory}>
+		<Route path = "/" component={Layout}>
+			<IndexRoute 										component={Dashboard}> </IndexRoute>
+			<Route path='profile(/:user)' 	name = "profile" 	component={Profile}>	</Route>
+			<Route path='settings' 			name = "settings" 	component={Settings}>   </Route>
+		</Route>
+	</Router>, 
+app)
