@@ -29,7 +29,7 @@ export default class Layout extends React.Component {
 
          
             
-            <Table Tstore={Tstore} pollInterval={10000}/>
+            <Table store={Tstore} pollInterval={10000}/>
         
         </div>
       </div>

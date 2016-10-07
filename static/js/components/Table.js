@@ -8,7 +8,7 @@ import { observer } from "mobx-react"
 @observer
 export default class Table extends React.Component {
   render(){
-    const { titles, rows } = this.props.Tstore
+    const { titles, rows } = this.props.store
     const idxK = titles.indexOf('date')
     const datarow = rows.map((row,i)=>(
         <TableR data={row} key={i} idxK={idxK}/>
