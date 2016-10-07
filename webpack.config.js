@@ -12,22 +12,25 @@ module.exports = {
   output: {
       path: path.resolve('./static/bundles/'),
       filename: '[name]-[hash].js',
-       // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
   },
 
   plugins: [
     new BundleTracker({filename: './webpack-stats.json'}),
+    new webpack.ProvidePlugin({ 
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery' 
+        }),
   ],
 
   module: {
     loaders: [
-      // we pass the output from babel loader to react-hot loader
       { test: /\.jsx?$/, 
         exclude: /node_modules/, 
-        loader: ['babel'], 
+        loader: ['babel-loader'], 
         query: {
           presets:['react','es2015','stage-0'],
-          plugins:['react-html-attrs','transform-class-properties','transform-decorators-legacy']     
+          plugins:['transform-decorators-legacy','transform-class-properties','react-html-attrs']     
             }
         },
     ],
