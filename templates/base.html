@@ -17,6 +17,7 @@
     <link href="{% webpack_static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% webpack_static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
     <link href="{% webpack_static 'css/dashboard.css' %}" rel="stylesheet">
+    
   <style type="text/css">
 :root .carbonad,
 :root #carbonads-container,
@@ -25,15 +26,15 @@
 { display: none !important; }</style>
   </head>
     <body id='react-app'>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 
 
 
-</body>
+
+    </body>
     {% render_bundle "main" %}
+    <script src="{% webpack_static 'js/jquery.min.js' %}"> </script>
+    <script src="{% webpack_static 'js/bootstrap.min.js' %}"> </script>
+    
+    
+    
 </html>

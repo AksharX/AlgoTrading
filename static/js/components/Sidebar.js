@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router'
 
 export default class Sidebar extends React.Component {
-    fetchData(url) {
+  fetchData(url) {
       console.log(this.props.store.fetchfromserver)
       setTimeout(this.props.store.fetchfromserver(url), 1000000); 
       }
