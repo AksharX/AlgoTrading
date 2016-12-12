@@ -8,7 +8,6 @@ import Profile from "./pages/Profile"
 import Settings from "./pages/Settings"
 import Dashboard from "./pages/Dashboard"
 
-import Tstore from "./stores/Store"
 
 
 const app = document.getElementById('react-app')

@@ -4,32 +4,23 @@ import { observer } from "mobx-react"
 
 @observer
 export default class TableR extends React.Component {
-  converttodate(date){
-    var d = new Date('2016-09-23T22:23:02Z');
-    var n = d.toLocaleString();
-    return n
-  }
-  compose(d,i,idxK){
-    if (idxK === -1){
-      return d
-    } else {
-      if (i == idxK){
-        return this.converttodate(d)
-      } else{
-        return d
-      }        
-    }
-
-  }
+  fetchData(stock) {
+      console.log(this.props.gstore.fetchfromserver)
+      setTimeout(this.props.gstore.fetchfromserver(stock), 1000000); 
+      }
   render(){
-  	const { data, keys, idxK } = this.props
-    const DataList = data.map((d,i)=>(
-        <td key={i}>{this.compose(d,i,idxK,)}</td>
-      )) 
+    const { row , subtitles, target } = this.props
+    const rowList = row.map(function(row,i){
+      if (typeof row != 'object'){
+        return <td key={i}>{row}</td>
+      } else {
+        return 
+      }
+    })
     return (
-	<tr>
-		{DataList}
-	</tr>
+  	<tr data-toggle="collapse" data-target={target} class="accordion-toggle" onClick={this.fetchData.bind(this,row[0])} >
+  		{rowList}
+  	</tr>
     )
   }
 }
